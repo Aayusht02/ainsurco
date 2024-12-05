@@ -1,0 +1,97 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Client{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="text-xl">Edit Client</h1>
+
+        <form method="post" action=".">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <div class="form-group">
+                <label for="id_company">Company:</label>
+                <input type="text" name="company" id="id_company" class="bordered-field short-field" value="{{ form.company.value }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_contact_person">Contact Person:</label>
+                <input type="text" name="contact_person" id="id_contact_person" class="bordered-field short-field" value="{{ form.contact_person.value }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_lead_consultant">Lead Consultant:</label>
+                <input type="text" name="lead_consultant" id="id_lead_consultant" class="bordered-field short-field" value="{{ form.lead_consultant.value }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_priority">Priority:</label>
+                <select name="priority" id="id_priority" class="bordered-field short-field">
+                    {% for value, label in form.priority.field.choices %}
+                        <option value="{{ value }}" {% if value == form.priority.value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_deliverable_type">Deliverable Type:</label>
+                <input type="text" name="deliverable_type" id="id_deliverable_type" class="bordered-field short-field" value="{{ form.deliverable_type.value }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_deliverable_name">Deliverable Name:</label>
+                <input type="text" name="deliverable_name" id="id_deliverable_name" class="bordered-field short-field" value="{{ form.deliverable_name.value }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_status">Status:</label>
+                <select name="status" id="id_status" class="bordered-field short-field">
+                    {% for value, label in form.status.field.choices %}
+                        <option value="{{ value }}" {% if value == form.status.value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_feedback">Feedback:</label>
+                <textarea name="feedback" id="id_feedback" class="bordered-field short-field">{{ form.feedback.value }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_start_date">Start Date:</label>
+                {{ form.start_date }}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_next_followup">Next Follow-up Date:</label>
+                {{ form.next_followup }}
+            </div>
+
+            <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">Submit</button>
+        </form>
+    </div>
+
+    <style>
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 150px; /* Adjust the width as needed */
+            margin-right: 10px;
+            text-align: right;
+        }
+        .bordered-field {
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .short-field {
+            max-width: 300px; /* Adjust the width as needed */
+        }
+    </style>
+{% endblock %}

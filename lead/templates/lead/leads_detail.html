@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}{{ lead.company }}{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">{{ lead.company }}</h1>
+
+        {% if lead.company %}
+            <p class="font-semibold">Company</p>
+            <p class="mb-2">{{ lead.company }}</p>
+        {% endif %}
+
+        <p class="font-semibold">Company Type</p>
+        <p class="mb-2">{{ lead.company_type }}</p>
+
+        <p class="font-semibold">Contact Person</p>
+        <p class="mb-2">{{ lead.contact_person }}</p>
+
+        <p class="font-semibold">Roles</p>
+        <p class="mb-2">{{ lead.roles }}</p>
+
+        <p class="font-semibold">Email</p>
+        <p class="mb-2">{{ lead.email }}</p>
+
+        <p class="font-semibold">Region</p>
+        <p class="mb-6">{{ lead.region }}</p>
+
+        <p class="font-semibold">Linkedin</p>
+        <p class="mb-6">{{ lead.linkedin_profile }}</p>
+
+        <p class="font-semibold">Resume/CV</p>
+        <p class="mb-6">{{ lead.resume }}</p>
+
+        <hr class="my-4">
+
+        <a href="{% url 'leads_edit' lead.id %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Edit</a>
+
+        <hr class="my-4">
+
+    </div>
+{% endblock %}

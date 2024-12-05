@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}{{ client.company }}{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">{{ client.company }}</h1>
+
+        {% if client.company %}
+            <p class="font-semibold">Company</p>
+            <p class="mb-2">{{ client.company }}</p>
+        {% endif %}
+
+        <p class="font-semibold">Contact Person</p>
+        <p class="mb-2">{{ client.contact_person }}</p>
+
+        <p class="font-semibold">Lead Consultant</p>
+        <p class="mb-2">{{ client.lead_consultant }}</p>
+
+        <p class="font-semibold">Priority</p>
+        <p class="mb-2">{{ client.get_priority_display }}</p>
+
+        <p class="font-semibold">Deliverable Type</p>
+        <p class="mb-2">{{ client.deliverable_type }}</p>
+
+        <p class="font-semibold">Deliverable Name</p>
+        <p class="mb-2">{{ client.deliverable_name }}</p>
+
+        <p class="font-semibold">Status</p>
+        <p class="mb-2">{{ client.get_status_display }}</p>
+
+        <p class="font-semibold">Feedback</p>
+        <p class="mb-2">{{ client.feedback }}</p>
+
+        <p class="font-semibold">Start Date</p>
+        <p class="mb-2">{{ client.start_date }}</p>
+
+        <p class="font-semibold">Next Follow-Up Date</p>
+        <p class="mb-6">{{ client.next_followup }}</p>
+
+        <hr class="my-4">
+
+        <a href="{% url 'clients_edit' client.id %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Edit</a>
+
+    </div>
+{% endblock %}

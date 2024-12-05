@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Client Pipeline{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">Clients</h1>
+
+        <a href="{% url 'add_client' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add Pipeline</a>
+
+        <div class="mt-6">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Company Name</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Contact Person</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Lead Consultant</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Priority</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Type</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Name</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Status</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Feedback</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Start Date</th>
+                        <th class="py-4 px-2 bg-gray-200 font-semibold">Next Follow-up Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients %}
+                        <tr class="{% cycle 'bg-gray-100' '' %}">
+                            <td class="py-2 px-2 border">
+                                <a href="{% url 'clients_edit' client.id %}" class="text-teal-600 hover:underline">{{ client.company }}</a>
+                            </td>
+                            <td class="py-2 px-2 border">{{ client.contact_person }}</td>
+                            <td class="py-2 px-2 border">{{ client.lead_consultant }}</td>
+                            <td class="py-2 px-2 border">{{ client.get_priority_display }}</td>
+                            <td class="py-2 px-2 border">{{ client.deliverable_type }}</td>
+                            <td class="py-2 px-2 border">{{ client.deliverable_name }}</td>
+                            <td class="py-2 px-2 border">{{ client.get_status_display }}</td>
+                            <td class="py-2 px-2 border">{{ client.feedback }}</td>
+                            <td class="py-2 px-2 border">{{ client.start_date }}</td>
+                            <td class="py-2 px-2 border">{{ client.next_followup }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+{% endblock %}

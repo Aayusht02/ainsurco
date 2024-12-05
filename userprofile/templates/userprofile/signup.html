@@ -1,0 +1,89 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+
+            <form method="post" action=".">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                <div class="form-group mb-4">
+                    <label for="id_username" class="block text-gray-700">Username:</label>
+                    <input type="text" name="username" id="id_username" class="bordered-field w-full" value="{{ form.username.value }}">
+                    {{ form.username.errors }}
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label for="id_email" class="block text-gray-700">Email:</label>
+                    <input type="email" name="email" id="id_email" class="bordered-field w-full" value="{{ form.email.value }}">
+                    {{ form.email.errors }}
+                </div>
+                
+                <div class="form-group mb-4 relative">
+                    <label for="id_password1" class="block text-gray-700">Password:</label>
+                    <input type="password" name="password1" id="id_password1" class="bordered-field w-full">
+                    {{ form.password1.errors }}
+                    <div class="absolute top-0 right-0 mt-2 mr-2">
+                        <span class="tooltip">
+                            <img src="{% static 'lead/images/info-icon.png' %}" alt="Info" class="w-4 h-4">
+                            <span class="tooltiptext">
+                                Password must be at least 8 characters long, contain both uppercase and lowercase letters, a number, and a special character.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-6">
+                    <label for="id_password2" class="block text-gray-700">Confirm Password:</label>
+                    <input type="password" name="password2" id="id_password2" class="bordered-field w-full">
+                    {{ form.password2.errors }}
+                </div>
+
+                <button class="w-full py-4 px-8 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition duration-300">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .bordered-field {
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the icon */
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+{% endblock %}

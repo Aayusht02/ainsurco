@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-6 text-center">Log In</h1>
+
+            <form method="post" action=".">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                <div class="form-group mb-4">
+                    <label for="id_username" class="block text-gray-700">Username:</label>
+                    <input type="text" name="username" id="id_username" class="bordered-field w-full" value="{{ form.username.value }}">
+                </div>
+                
+                <div class="form-group mb-6">
+                    <label for="id_password" class="block text-gray-700">Password:</label>
+                    <input type="password" name="password" id="id_password" class="bordered-field w-full">
+                </div>
+
+                <button class="w-full py-4 px-8 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition duration-300">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .bordered-field {
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+{% endblock %}
