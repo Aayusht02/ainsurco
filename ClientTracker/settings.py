@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&2s01tbb^e9t##***%w185$d3zb^cjo-s))i%_=_0qosk(#eo2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".awsapprunner.com",'localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGIN_URL = 'login'
@@ -36,7 +36,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STORAGES = {
     "default": {
