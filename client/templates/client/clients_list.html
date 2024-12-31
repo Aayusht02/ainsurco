@@ -1,65 +1,230 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block title %}Client Pipeline{% endblock %}
 
 {% block content %}
-    <div class="py-6 px-6">
-        <h1 class="mb-4 text-xl">Clients</h1>
+<div class="py-6 px-6">
+    <h1 class="mb-4 text-xl">Client Pipeline</h1>
 
-        <a href="{% url 'add_client' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add Pipeline</a>
+    <a href="{% url 'add_client' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add Pipeline</a>
 
-        <div class="mt-6">
-            <table class="min-w-full bg-white">
-                <thead>
-                    <tr>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Company Name</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Contact Person</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Lead Consultant</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Priority</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Type</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Name</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Status</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Feedback</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Start Date</th>
-                        <th class="py-4 px-2 bg-gray-200 font-semibold">Next Follow-up Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for client in clients %}
-                        <tr class="{% cycle 'bg-gray-100' '' %}">
-                            <td class="py-2 px-2 border">
-                                <a href="{% url 'clients_edit' client.id %}" class="text-teal-600 hover:underline">{{ client.company }}</a>
-                            </td>
-                            <td class="py-2 px-2 border">{{ client.contact_person }}</td>
-                            <td class="py-2 px-2 border">{{ client.lead_consultant }}</td>
-                            <td class="py-2 px-2 border">{{ client.get_priority_display }}</td>
-                            <td class="py-2 px-2 border">{{ client.deliverable_type }}</td>
-                            <td class="py-2 px-2 border">{{ client.deliverable_name }}</td>
-                            <td class="py-2 px-2 border">{{ client.get_status_display }}</td>
-                            <td class="py-2 px-2 border">{{ client.feedback }}</td>
-                            <td class="py-2 px-2 border">{{ client.start_date }}</td>
-                            <td class="py-2 px-2 border">{{ client.next_followup }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Filter and Sort Buttons -->
+    <div class="flex items-center space-x-4 mt-4 mb-6">
+        <!-- Filter Dropdown -->
+        <div class="relative dropdown">
+            <button class="dropdown-button">Filter by</button>
+            <ul class="dropdown-menu">
+                <!-- Company Name Filter -->
+                <li class="dropdown-item">
+                    <span>Company Name</span>
+                    <ul class="sub-dropdown">
+                        {% for company in companies %}
+                        <li>
+                            <a href="?company={{ company }}">{{ company }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <!-- Contact Person Filter -->
+                <li class="dropdown-item">
+                    <span>Contact Person</span>
+                    <ul class="sub-dropdown">
+                        {% for contact_person in contact_people %}
+                        <li>
+                            <a href="?contact_person={{ contact_person }}">{{ contact_person }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+               
+                <!-- Priority Filter -->
+                <li class="dropdown-item">
+                    <span>Priority</span>
+                    <ul class="sub-dropdown">
+                        {% for priority in priorities %}
+                        <li>
+                            <a href="?priority={{ priority }}">{{ priority }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+               
+                <!-- Status Filter -->
+                <li class="dropdown-item">
+                    <span>Status</span>
+                    <ul class="sub-dropdown">
+                        {% for status in statuses %}
+                        <li>
+                            <a href="?status={{ status }}">{{ status }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
         </div>
+
+        <!-- Sort by Dropdown -->
+        <div class="relative dropdown">
+            <button class="dropdown-button">Sort by</button>
+            <ul class="dropdown-menu">
+                <li><a href="?sort_by=company">Company Name</a></li>
+                <li><a href="?sort_by=priority">Priority</a></li>
+                <li><a href="?sort_by=deliverable_type">Deliverable Type</a></li>
+                <li><a href="?sort_by=status">Status</a></li>
+                <li><a href="?sort_by=start_date">Start Date</a></li>
+                <li><a href="?sort_by=next_followup">Next Follow-up Date</a></li>
+            </ul>
+        </div>
+
+        <!-- Reset Button -->
+        <a href="{% url 'clients_list' %}" class="dropdown-button bg-teal-600">Reset</a>
     </div>
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-            word-wrap: break-word;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <!-- Client List Table -->
+    <div class="mt-6">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Company Name</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Contact Person</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Lead Consultant</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Priority</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Type</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Deliverable Name</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Status</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Start Date</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Next Follow-up Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr class="{% cycle 'bg-gray-100' '' %}">
+                    <td class="py-2 px-2 border">
+                        <a href="{% url 'clients_edit' client.id %}" class="text-teal-600 hover:underline">{{ client.company }}</a>
+                    </td>
+                    <td class="py-2 px-2 border">{{ client.contact_person }}</td>
+                    <td class="py-2 px-2 border">{{ client.lead_consultant }}</td>
+                    <td class="py-2 px-2 border">{{ client.get_priority_display }}</td>
+                    <td class="py-2 px-2 border">{{ client.deliverable_type }}</td>
+                    <td class="py-2 px-2 border">{{ client.deliverable_name }}</td>
+                    <td class="py-2 px-2 border">{{ client.get_status_display }}</td>
+                    <td class="py-2 px-2 border">{{ client.start_date }}</td>
+                    <td class="py-2 px-2 border">{{ client.next_followup }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+/* Dropdown button styling */
+.dropdown-button {
+    padding: 10px 20px;
+    background-color: #38b2ac;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Main dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Sub-dropdown menu */
+.sub-dropdown {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* Show dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Show sub-dropdown on hover */
+.dropdown-item:hover .sub-dropdown {
+    display: block;
+}
+
+/* Dropdown item links */
+.dropdown-menu a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f2f2f2;
+}
+</style>
+
+
+<script>
+// Toggles a dropdown menu on button click
+document.querySelectorAll('.dropdown').forEach((dropdown) => {
+    const button = dropdown.querySelector('.dropdown-button');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    // Toggle dropdown menu
+    button.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        menu.classList.toggle('hidden'); // Show/hide menu
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', () => {
+        menu.classList.add('hidden'); // Hide the menu
+    });
+});
+
+// Toggles a sub-dropdown menu on button click
+document.querySelectorAll('.dropdown-item').forEach((item) => {
+    const subDropdownButton = item.querySelector('.sub-dropdown-button');
+    const subDropdownMenu = item.querySelector('.sub-dropdown');
+
+    if (subDropdownButton) {
+        subDropdownButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            subDropdownMenu.classList.toggle('hidden'); // Show/hide sub-menu
+        });
+    }
+});
+</script>
 {% endblock %}

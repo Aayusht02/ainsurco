@@ -12,7 +12,7 @@ class CLientAdminForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['company'].queryset = Lead.objects.values_list('company', flat=True).distinct()
         self.fields['contact_person'].queryset = Lead.objects.values_list('contact_person', flat=True).distinct()
-
+        
 class CLientAdmin(admin.ModelAdmin):
     form = CLientAdminForm
 

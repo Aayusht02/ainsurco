@@ -17,6 +17,8 @@ urlpatterns = [
     path('log-in/', views.LoginView.as_view(template_name='userprofile/login.html'), name='login'),
     path('log-out/', views.LogoutView.as_view(template_name='userprofile/logout.html'), name='logout'),
     path('admin/', admin.site.urls),
+    path('time-tracker/', include('time_tracker.urls', namespace='time_tracker')),
+    path('associates/', include('associate_list.urls')),
     
 ]
 

@@ -1,0 +1,222 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="top-section">
+    <div class="button-container">
+        <button onclick="goToPreviousMonth()" class="btn">Previous</button>
+        <button onclick="goToCurrentMonth()" class="btn">Today</button>
+        <button onclick="goToNextMonth()" class="btn">Next</button>
+    </div>
+</div>
+
+<h1 style="text-align: center; margin-bottom: 20px;">Attendance Calendar</h1>
+
+<div id="calendar" class="calendar-container"></div>
+
+<script>
+    const attendanceStatus = JSON.parse('{{ attendance_status|escapejs }}');
+
+    function createCalendar(year, month, attendanceStatus) {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = ''; // Clear any existing calendar
+
+        const date = new Date(year, month);
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+
+        // Create header with month and year
+        const header = document.createElement('div');
+        header.classList.add('calendar-header');
+        header.innerHTML = `<h2>${date.toLocaleString('default', { month: 'long' })} ${year}</h2>`;
+        calendar.appendChild(header);
+
+        // Create day names row
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const dayHeader = document.createElement('div');
+        dayHeader.classList.add('day-names');
+        dayNames.forEach(day => {
+            const dayElement = document.createElement('span');
+            dayElement.classList.add('day-name');
+            dayElement.innerText = day;
+            dayHeader.appendChild(dayElement);
+        });
+        calendar.appendChild(dayHeader);
+
+        // Create days grid
+        const days = document.createElement('div');
+        days.classList.add('days');
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('span');
+            emptyCell.classList.add('empty');
+            days.appendChild(emptyCell); // Empty spaces for days before the first
+        }
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('span');
+            const currentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            dayElement.innerText = day;
+            dayElement.classList.add('day');
+            dayElement.dataset.date = currentDate; // Store date in data attribute
+
+            // Check attendance status for the current date
+            if (attendanceStatus[currentDate]) {
+                const status = attendanceStatus[currentDate];
+                if (status === 'full_day') {
+                    dayElement.classList.add('full-day');
+                } else if (status === 'half_day') {
+                    dayElement.classList.add('half-day');
+                } else if (status === 'leave') {
+                    dayElement.classList.add('leave');
+                }
+            }
+
+            // Redirect to `add_attendance` on click
+            dayElement.onclick = function () {
+                const date = this.dataset.date;
+                window.location.href = `/time-tracker/add-attendance/${date}/`;
+            };
+
+            days.appendChild(dayElement);
+        }
+        calendar.appendChild(days);
+    }
+
+    // Navigation functions
+    function goToPreviousMonth() {
+        const today = new Date(currentYear, currentMonth - 1);
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+        createCalendar(currentYear, currentMonth, attendanceStatus);
+    }
+
+    function goToNextMonth() {
+        const today = new Date(currentYear, currentMonth + 1);
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+        createCalendar(currentYear, currentMonth, attendanceStatus);
+    }
+
+    function goToCurrentMonth() {
+        currentMonth = today.getMonth();
+        currentYear = today.getFullYear();
+        createCalendar(currentYear, currentMonth, attendanceStatus);
+    }
+
+    // Initialize calendar
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    createCalendar(currentYear, currentMonth, attendanceStatus);
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+        margin: 0;
+        padding: 0;
+    }
+
+    .top-section {
+        background-color: teal;
+        padding: 15px 0;
+    }
+
+    .button-container {
+        max-width: 700px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        background-color: #ffffff;
+        color: teal;
+        border: 1px solid teal;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn:hover {
+        background-color: teal;
+        color: #ffffff;
+    }
+
+    .calendar-container {
+        max-width: 700px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #dee2e6;
+    }
+
+    .calendar-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header h2 {
+        font-size: 24px;
+        margin: 0;
+    }
+
+    .day-names {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        text-align: center;
+        font-weight: bold;
+        color: #495057;
+    }
+
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
+
+    .day,
+    .empty {
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .day:hover {
+        background-color: #e9ecef;
+    }
+
+    .full-day {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .half-day {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .leave {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .empty {
+        background: none;
+        border: none;
+    }
+</style>
+{% endblock %}

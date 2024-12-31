@@ -1,0 +1,218 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Associate List{% endblock %}
+
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="mb-4 text-xl">Associate List</h1>
+
+    <a href="{% url 'add_associate' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add Associate</a>
+
+    <!-- Filter and Sort Buttons -->
+    <div class="flex items-center space-x-4 mt-4 mb-6">
+        <!-- Filter Dropdown -->
+        <div class="relative dropdown">
+            <button class="dropdown-button">Filter by</button>
+            <ul class="dropdown-menu">
+                <!-- Company Name Filter -->
+                <li class="dropdown-item">
+                    <span>Company Name</span>
+                    <ul class="sub-dropdown">
+                        {% for company_name in companies %}
+                        <li>
+                            <a href="?company_name={{ company_name }}">{{ company_name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <!-- Contact Person Filter -->
+                <li class="dropdown-item">
+                    <span>Contact Person</span>
+                    <ul class="sub-dropdown">
+                        {% for contact_person in contact_people %}
+                        <li>
+                            <a href="?contact_person={{ contact_person }}">{{ contact_person }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <!-- Contact Person Filter -->
+                <li class="dropdown-item">
+                    <span>Specialization</span>
+                    <ul class="sub-dropdown">
+                        {% for specialization in specializations %}
+                        <li>
+                            <a href="?specialization={{ specialization }}">{{ specialization }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <!-- Contact Person Filter -->
+                <li class="dropdown-item">
+                    <span>Skills</span>
+                    <ul class="sub-dropdown">
+                        {% for skills in skill_set %}
+                        <li>
+                            <a href="?skills={{ skills }}">{{ skills }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Sort by Dropdown -->
+        <div class="relative dropdown">
+            <button class="dropdown-button">Sort by</button>
+            <ul class="dropdown-menu">
+                <li><a href="?sort_by=company_name">Company Name</a></li>
+                <li><a href="?sort_by=contact_person">Contact Person</a></li>
+                <li><a href="?sort_by=specialization">Specialization</a></li>     
+            </ul>
+        </div>
+
+        <!-- Reset Button -->
+        <a href="{% url 'associate_list' %}" class="dropdown-button bg-teal-600">Reset</a>
+    </div>
+
+    <div class="mt-6">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Company Name</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Company Type</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Contact Person</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Specialization</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Skills</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Phone Number</th>
+                    <th class="py-4 px-2 bg-gray-200 font-semibold">Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for associate in associates %}
+                    <tr class="{% cycle 'bg-gray-100' '' %}">
+                        <td class="py-2 px-2 border">{{ associate.company_name }}</td>
+                        <td class="py-2 px-2 border">{{ associate.company_type }}</td>
+                        <td class="py-2 px-2 border">{{ associate.contact_person }}</td>
+                        <td class="py-2 px-2 border">{{ associate.specialization }}</td>
+                        <td class="py-2 px-2 border">{{ associate.skills }}</td>
+                        <td class="py-2 px-2 border">{{ associate.phone_number }}</td>
+                        <td class="py-2 px-2 border">{{ associate.comments }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+/* Dropdown button styling */
+.dropdown-button {
+    padding: 10px 20px;
+    background-color: #38b2ac;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Main dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Sub-dropdown menu */
+.sub-dropdown {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+/* Show dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Show sub-dropdown on hover */
+.dropdown-item:hover .sub-dropdown {
+    display: block;
+}
+
+/* Dropdown item links */
+.dropdown-menu a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f2f2f2;
+}
+</style>
+
+
+<script>
+// Toggles a dropdown menu on button click
+document.querySelectorAll('.dropdown').forEach((dropdown) => {
+    const button = dropdown.querySelector('.dropdown-button');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    // Toggle dropdown menu
+    button.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        menu.classList.toggle('hidden'); // Show/hide menu
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', () => {
+        menu.classList.add('hidden'); // Hide the menu
+    });
+});
+
+// Toggles a sub-dropdown menu on button click
+document.querySelectorAll('.dropdown-item').forEach((item) => {
+    const subDropdownButton = item.querySelector('.sub-dropdown-button');
+    const subDropdownMenu = item.querySelector('.sub-dropdown');
+
+    if (subDropdownButton) {
+        subDropdownButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            subDropdownMenu.classList.toggle('hidden'); // Show/hide sub-menu
+        });
+    }
+});
+</script>
+{% endblock %}

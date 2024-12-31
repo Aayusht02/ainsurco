@@ -17,6 +17,8 @@ class Lead(models.Model):
     region = models.CharField(max_length=255)
     linkedin_profile = models.URLField(max_length=200, blank=True, null=True)
     resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)  
+    comments = models.TextField(blank=True, null=True) 
     created_by = models.ForeignKey(User, related_name='leads', on_delete=models.CASCADE)
 
     def __str__(self):

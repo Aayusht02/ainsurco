@@ -33,6 +33,13 @@
         <p class="font-semibold">Resume/CV</p>
         <p class="mb-6">{{ lead.resume }}</p>
 
+        <p class="font-semibold">Phone Number</p>
+        <p class="mb-2">{{ lead.phone_number }}</p>
+
+        <p class="font-semibold">Comments</p>
+        <p class="mb-2">{{ lead.comments }}</p>
+
+
         <hr class="my-4">
 
         <a href="{% url 'leads_edit' lead.id %}" class="py-2 px-4 rounded-xl bg-teal-500 text-white">Edit</a>

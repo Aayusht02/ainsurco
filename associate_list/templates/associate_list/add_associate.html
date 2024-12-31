@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Add Associate{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">Add New Associate</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="py-4 px-6 bg-teal-600 text-white rounded-xl">Add Associate</button>
+        </form>
+    </div>
+{% endblock %}
